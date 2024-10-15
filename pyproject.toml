@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "balance-manager"
+version = "0.1.0"
+description = ""
+authors = ["poligrafo"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.10.15"
+django = "^5.1.2"
+djangorestframework = "^3.15.2"
+psycopg2-binary = "^2.9.9"
+dj-database-url = "^2.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
