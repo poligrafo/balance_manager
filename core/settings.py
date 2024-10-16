@@ -27,7 +27,11 @@ SECRET_KEY = 'django-insecure-qi9324=svkwfgy_@y^g#=kyz@b9r6z0@50c@6g+&40v6k5vh@w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '0.0.0.0',
+    'localhost',
+    '127.0.0.1',
+]
 
 
 # Application definition
@@ -41,7 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'app.balance'
+    'rest_framework_simplejwt',
+    'apps.balance',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -74,6 +80,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
