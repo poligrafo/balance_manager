@@ -7,7 +7,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
-from apps.balance.rest.serealizers import DepositSerializer, TransferSerializer
+from apps.balance.models import Transaction
+from apps.balance.rest.serealizers import DepositSerializer, TransferSerializer, TransactionSerializer
 from apps.balance.services import BalanceService, InsufficientBalanceException
 
 logger = logging.getLogger('balance')
@@ -68,3 +69,11 @@ class BalanceViewSet(GenericViewSet):
         except ValueError as e:
             logger.error(f"Transfer failed for {request.user.username}: {str(e)}")
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['get'], url_path='transactions')
+    def transaction_history(self, request):
+        """Get the transaction history for the user."""
+        transactions = Transaction.objects.filter(from_user=request.user).order_by('-created_at')
+        serializer = TransactionSerializer(transactions, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
