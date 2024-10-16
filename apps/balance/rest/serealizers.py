@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
+from apps.balance.models import Transaction
+
 
 class DepositSerializer(serializers.Serializer):
     """
@@ -31,3 +33,24 @@ class TransferSerializer(serializers.Serializer):
         min_value=1,
         help_text="The transfer amount in kopecks. Must be a positive integer."
     )
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    """
+    Serializer for transaction history.
+
+    Fields:
+        - id: Unique identifier for the transaction.
+        - from_user: User who initiated the transaction.
+        - to_user: User who received the funds (nullable).
+        - transaction_type: Type of the transaction (deposit/transfer).
+        - amount: Amount of the transaction in kopecks.
+        - created_at: Timestamp when the transaction was created.
+    """
+    from_user = serializers.StringRelatedField()
+    to_user = serializers.StringRelatedField(allow_null=True)
+
+    class Meta:
+        model = Transaction
+        fields = ['id', 'from_user', 'to_user', 'transaction_type', 'amount', 'created_at']
+        read_only_fields = ['id', 'created_at']
